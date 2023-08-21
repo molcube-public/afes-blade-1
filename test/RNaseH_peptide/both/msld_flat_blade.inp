@@ -1,0 +1,78 @@
+! CHARMM input file for Multi-Site lambda-dynamics
+! MSLD references:
+!    J.L. Knight and C.L. Brooks III. Multi-site lambda-dynamics: 
+!       free energy method for simulating Structure-Activity Relationship 
+!       studies. J. Chem. Theory Comput. 7, 2728-2739 (2011). 
+!    J.L. Knight and C.L. Brooks III. Applying efficient 
+!       implicit non-geometric constraints in free energy simulations.
+!       J. Comput. Chem. 32, 3423-3432 (2011). 
+! Stream file for MSLD created by process.py
+! Written by Ryan Hayes 2016-06-18
+!
+
+verbose 1
+
+variables set restartfile null
+
+stream arguments_blade.inp
+
+variables set fnex 5.5
+variables set temp 298.15
+
+stream {DIR}/variablesflat_blade.inp
+
+stream {DIR}/prep_blade/{sysname}.inp
+
+! Set nonbonded options
+! PORTED run setvariable rswitch 9.0
+! PORTED run setvariable rcut 10.0
+! PORTED run setvariable invbetaewald 3.125
+! PORTED run setvariable orderewald 6
+! PORTED run setvariable gridspace 1.1 ! 1.1 A is max grid spacing, should give 40x40x40
+
+! PORTED coordinates file {DIR}/prep_blade/minimized.pdb
+coordinates velocity {temp}
+
+!---------------------------------------------------------------------------
+! Setup of dynamics run
+!---------------------------------------------------------------------------
+
+! PORTED structure shake hbond
+! PORTED run setvariable gamma 1.0
+! run setvariable shaketolerance 0.0000002
+
+
+! PORTED run setvariable fnmxtc {DIR}/dcd/{sysname}_heat.xtc
+! PORTED run setvariable fnmnrg {DIR}/dcd/{sysname}_heat.nrg
+! PORTED run setvariable fnmlmd {DIR}/res/{sysname}_heat.lmd
+! PORTED run setvariable fnmcpo {DIR}/res/{sysname}_heat.res
+! PORTED if not eq {restartfile} null
+! PORTED   run setvariable fnmcpi {restartfile}
+! PORTED endif
+
+! PORTED run setvariable nsteps {esteps}
+! PORTED run setvariable dt 0.002
+! PORTED run setvariable T {temp}
+! PORTED run setvariable freqxtc 10000
+! PORTED run setvariable freqnrg 1000
+! PORTED run setvariable freqnpt 100
+! PORTED run setvariable freqlmd 10
+! PORTED run setvariable hrlmd no
+! PORTED run dynamics
+
+
+!! Production run of 100 ps / 1 ns
+! PORTED run setvariable fnmxtc {DIR}/dcd/{sysname}_flat.xtc
+! PORTED run setvariable fnmnrg {DIR}/dcd/{sysname}_flat.nrg
+! PORTED run setvariable fnmlmd {DIR}/res/{sysname}_flat.lmd_0
+! PORTED run setvariable fnmcpo {DIR}/res/{sysname}_flat.res
+
+! PORTED run setvariable nsteps {nsteps}
+! PORTED run setvariable dt 0.002
+! PORTED run setvariable T {temp}
+! PORTED run setvariable freqxtc 10000
+! PORTED run setvariable freqnrg 1000
+! PORTED run setvariable freqnpt 100
+! PORTED run setvariable freqlmd 10
+! PORTED run setvariable hrlmd no
+! PORTED run dynamics
